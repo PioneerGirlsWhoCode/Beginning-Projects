@@ -2,6 +2,10 @@
 const int trigPin = 12;
 const int echoPin = 13;
 
+//distance constraints
+const int LOWER_BOUND = 10;
+const int UPPER_BOUND = 60;
+
 //motor output
 const int motorPin = 9;
 
@@ -24,11 +28,12 @@ void loop() {
   Serial.print("dist ");
 
   //map function doesn't constrain values
-  dist = constrain(dist, 10, 60);
+  //assume anything below 10cm or above 60cm is signal noise
+  dist = constrain(dist, LOWER_BOUND, UPPER_BOUND);
   Serial.println(dist);
 
-  //translate distance into analog output
-  motorOutput = map(dist, 10, 60, 0, 255);
+  //translate distance into analog output (from 0 to 255)
+  motorOutput = map(dist, LOWER_BOUND, UPPER_BOUND, 0, 255);
   
   Serial.print("motor ");
   Serial.println(motorOutput);
